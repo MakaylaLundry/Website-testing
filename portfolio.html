@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Aerotype Developmental Systems</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000000;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .team-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .team-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #ffffff;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .hero-text {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .skill-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .skill-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ffffff, #666666);
+            border-radius: 3px;
+            transition: width 1.5s ease;
+        }
+        
+        .achievement-badge {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .timeline-container {
+            position: relative;
+        }
+        
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #ffffff, rgba(255, 255, 255, 0.3));
+            transform: translateX(-50%);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 4rem;
+        }
+        
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-right: 55%;
+            text-align: right;
+        }
+        
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-left: 55%;
+            text-align: left;
+        }
+        
+        .timeline-marker {
+            position: absolute;
+            left: 50%;
+            top: 1rem;
+            width: 16px;
+            height: 16px;
+            background: #ffffff;
+            border-radius: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+        
+        @media (max-width: 768px) {
+            .timeline-line {
+                left: 2rem;
+            }
+            
+            .timeline-item:nth-child(odd) .timeline-content,
+            .timeline-item:nth-child(even) .timeline-content {
+                margin-left: 4rem;
+                margin-right: 0;
+                text-align: left;
+            }
+            
+            .timeline-marker {
+                left: 2rem;
+            }
+            
+            .hero-text {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="gradient-bg"></div>
+    
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-black bg-opacity-80 backdrop-blur-md border-b border-white border-opacity-10">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <img src="resources/aerotype-logo.png" alt="Aerotype Logo" class="h-8 w-auto">
+                    <span class="text-xl font-bold">Aerotype</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="nav-link text-white hover:text-gray-300">Home</a>
+                    <a href="projects.html" class="nav-link text-white hover:text-gray-300">Projects</a>
+                    <a href="portfolio.html" class="nav-link text-white hover:text-gray-300">Portfolio</a>
+                    <a href="about.html" class="nav-link text-white hover:text-gray-300">About</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobileMenuBtn" class="text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 hero-text">Team Portfolio</h1>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto hero-text">
+                    Meet the passionate student engineers driving innovation at Aerotype. 
+                    Our diverse team combines academic excellence with hands-on experience in aerospace technology.
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Team Members -->
+    <section class="py-20">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6 hero-text">Our Engineering Team</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto hero-text">
+                    A diverse group of aerospace engineering students united by our passion for innovation and autonomous systems.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Team Member 1 -->
+                <div class="team-card rounded-xl p-6 hero-text">
+                    <div class="w-24 h-24 bg-gradient-to-br from-white to-gray-400 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <span class="text-2xl font-bold text-black">AS</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-center">Alex Sullivan</h3>
+                    <p class="text-gray-400 text-center mb-4">Lead Systems Engineer</p>
+                    <p class="text-gray-300 text-sm mb-6">
+                        PhD candidate in Aerospace Engineering with focus on autonomous systems coordination. 
+                        4+ years experience in UAV development and swarm intelligence algorithms.
+                    </p>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>Autonomous Systems</span>
+                                <span>95%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-fill" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>AI/ML Algorithms</span>
+                                <span>88%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-fill" style="width: 88%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>Control Systems</span>
+                                <span>92%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-fill" style="width: 92%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-gray-800 px-2 py-1 rounded text-xs">Team Lead</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded text-xs">PhD Candidate</span>
+                    </div>
+                </div>
+                
+                <!-- Team Member 2 -->
+                <div class="team-card rounded-xl p-6 hero-text">
+                    <div class="w-24 h-24 bg-gradient-to-br from-white to-gray-400 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <span class="text-2xl font-bold text-black">MC</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-center">Maya Chen</h3>
+                    <p class="text-gray-400 text-center mb-4">Propulsion Systems Engineer</p>
+                    <p class="text-gray-300 text-sm mb-6">
+                        Master's student in Mechanical Engineering specializing in advanced propulsion systems. 
+                        Expertise in electric motors and hybrid power solutions for extended flight operations.
+                    </p>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>Propulsion Design</span>
+                                <span>94%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-fill" style="width: 94%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>Energy Systems</span>
+                                <span>89%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-fill" style="width: 89%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>Thermal Management</span>
+                                <span>85%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-fill" style="width: 85%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-gray-800 px-2 py-1 rounded text-xs">MS Student</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded text-xs">Propulsion</span>
+                    </div>
+                </div>
+                
+                <!-- Team Member 3 -->
+                <div class="team-card rounded-xl p-6 hero-text">
+                    <div class="w-24 h-24 bg-gradient-to-br from-white to-gray-400 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <span class="text-2xl font-bold text-black">RJ</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-center">Ryan Johnson</h3>
+                    <p class="text-gray-400 text-center mb-4">Communication Systems Lead</p>
+                    <p class="text-gray-300 text-sm mb-6">
+                        Senior undergraduate in Electrical Engineering with focus on RF systems and mesh networks. 
+                        Developed innovative communication protocols for challenging environments.
+                    </p>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>RF Systems</span>
+                                <span>91%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-fill" style="width: 91%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>Network Protocols</span>
+                                <span>87%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-fill" style="width: 87%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>Signal Processing</span>
+                                <span>83%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-fill" style="width: 83%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-gray-800 px-2 py-1 rounded text-xs">Senior</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded text-xs">Communications</span>
+                    </div>
+                </div>
+                
+                <!-- Team Member 4 -->
+                <div class="team-card rounded-xl p-6 hero-text">
+                    <div class="w-24 h-24 bg-gradient-to-br from-white to-gray-400 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <span class="text-2xl font-bold text-black">LP</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-center">Lisa Patel</h3>
+                    <p class="text-gray-400 text-center mb-4">Software Architecture Lead</p>
+                    <p class="text-gray-300 text-sm mb-6">
+                        Computer Science graduate student specializing in distributed systems and real-time processing. 
+                        Lead developer of our autonomous coordination software platform.
+                    </p>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>Distributed Systems</span>
+                                <span>93%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-fill" style="width: 93%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>Real-time Processing</span>
+                                <span>90%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-fill" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>Machine Learning</span>
+                                <span>86%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-fill" style="width: 86%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-gray-800 px-2 py-1 rounded text-xs">CS Grad</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded text-xs">Software</span>
+                    </div>
+                </div>
+                
+                <!-- Team Member 5 -->
+                <div class="team-card rounded-xl p-6 hero-text">
+                    <div class="w-24 h-24 bg-gradient-to-br from-white to-gray-400 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <span class="text-2xl font-bold text-black">DK</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-center">David Kim</h3>
+                    <p class="text-gray-400 text-center mb-4">Aerodynamics Specialist</p>
+                    <p class="text-gray-300 text-sm mb-6">
+                        Aerospace Engineering junior with expertise in fluid dynamics and aerodynamic optimization. 
+                        Responsible for drone airframe design and performance optimization.
+                    </p>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>Aerodynamics</span>
+                                <span>88%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-fill" style="width: 88%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>CAD Design</span>
+                                <span>92%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-fill" style="width: 92%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>CFD Analysis</span>
+                                <span>84%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-fill" style="width: 84%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-gray-800 px-2 py-1 rounded text-xs">Junior</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded text-xs">Aerodynamics</span>
+                    </div>
+                </div>
+                
+                <!-- Team Member 6 -->
+                <div class="team-card rounded-xl p-6 hero-text">
+                    <div class="w-24 h-24 bg-gradient-to-br from-white to-gray-400 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <span class="text-2xl font-bold text-black">ER</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-center">Emma Rodriguez</h3>
+                    <p class="text-gray-400 text-center mb-4">Testing & Validation Lead</p>
+                    <p class="text-gray-300 text-sm mb-6">
+                        Mechanical Engineering senior with focus on systems testing and validation protocols. 
+                        Develops comprehensive testing frameworks for our autonomous systems.
+                    </p>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>Test Development</span>
+                                <span>89%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-fill" style="width: 89%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>Data Analysis</span>
+                                <span>85%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-fill" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>Quality Assurance</span>
+                                <span>91%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-fill" style="width: 91%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-gray-800 px-2 py-1 rounded text-xs">Senior</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded text-xs">Testing</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Achievements & Awards -->
+    <section class="py-20">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6 hero-text">Achievements & Recognition</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto hero-text">
+                    Our team's innovative solutions have earned recognition in prestigious competitions and industry forums.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="achievement-badge rounded-xl p-6 hero-text">
+                    <div class="text-3xl mb-4">🏆</div>
+                    <h3 class="text-lg font-bold mb-2">First Place - AIAA Design Competition</h3>
+                    <p class="text-gray-300 text-sm mb-3">
+                        Won top honors in the American Institute of Aeronautics and Astronautics 
+                        student design competition for autonomous systems.
+                    </p>
+                    <span class="text-gray-400 text-xs">2024</span>
+                </div>
+                
+                <div class="achievement-badge rounded-xl p-6 hero-text">
+                    <div class="text-3xl mb-4">🚀</div>
+                    <h3 class="text-lg font-bold mb-2">NASA University Student Design Challenge</h3>
+                    <p class="text-gray-300 text-sm mb-3">
+                        Finalist in NASA's annual student design challenge for our innovative 
+                        off-grid UAV swarm solution.
+                    </p>
+                    <span class="text-gray-400 text-xs">2024</span>
+                </div>
+                
+                <div class="achievement-badge rounded-xl p-6 hero-text">
+                    <div class="text-3xl mb-4">💡</div>
+                    <h3 class="text-lg font-bold mb-2">Engineering Innovation Grant</h3>
+                    <p class="text-gray-300 text-sm mb-3">
+                        Received $50,000 research grant from the university's innovation fund 
+                        to develop our autonomous coordination algorithms.
+                    </p>
+                    <span class="text-gray-400 text-xs">2023</span>
+                </div>
+                
+                <div class="achievement-badge rounded-xl p-6 hero-text">
+                    <div class="text-3xl mb-4">📊</div>
+                    <h3 class="text-lg font-bold mb-2">Best Technical Presentation</h3>
+                    <p class="text-gray-300 text-sm mb-3">
+                        Awarded best technical presentation at the International Conference 
+                        on Autonomous Systems for our swarm intelligence research.
+                    </p>
+                    <span class="text-gray-400 text-xs">2024</span>
+                </div>
+                
+                <div class="achievement-badge rounded-xl p-6 hero-text">
+                    <div class="text-3xl mb-4">🔬</div>
+                    <h3 class="text-lg font-bold mb-2">Published Research Papers</h3>
+                    <p class="text-gray-300 text-sm mb-3">
+                        Co-authored 3 peer-reviewed papers on autonomous drone coordination 
+                        and swarm intelligence applications.
+                    </p>
+                    <span class="text-gray-400 text-xs">2023-2024</span>
+                </div>
+                
+                <div class="achievement-badge rounded-xl p-6 hero-text">
+                    <div class="text-3xl mb-4">🎯</div>
+                    <h3 class="text-lg font-bold mb-2">Industry Partnership</h3>
+                    <p class="text-gray-300 text-sm mb-3">
+                        Established collaboration with leading aerospace companies for 
+                        real-world testing and validation of our technologies.
+                    </p>
+                    <span class="text-gray-400 text-xs">2024</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Team Journey Timeline -->
+    <section class="py-20">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6 hero-text">Our Journey</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto hero-text">
+                    From a student project to a recognized innovation team, follow our path of growth and achievement.
+                </p>
+            </div>
+            
+            <div class="timeline-container max-w-4xl mx-auto">
+                <div class="timeline-line"></div>
+                
+                <div class="timeline-item hero-text">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="bg-gray-900 rounded-lg p-6">
+                            <h3 class="text-xl font-bold mb-2">Team Formation</h3>
+                            <p class="text-gray-400 text-sm mb-3">January 2023</p>
+                            <p class="text-gray-300">
+                                Six engineering students came together with a shared vision for advancing 
+                                autonomous aerospace technology through collaborative innovation.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item hero-text">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="bg-gray-900 rounded-lg p-6">
+                            <h3 class="text-xl font-bold mb-2">First Prototype</h3>
+                            <p class="text-gray-400 text-sm mb-3">June 2023</p>
+                            <p class="text-gray-300">
+                                Successfully developed and tested our first autonomous drone prototype 
+                                with basic coordination capabilities and communication protocols.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item hero-text">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="bg-gray-900 rounded-lg p-6">
+                            <h3 class="text-xl font-bold mb-2">Competition Success</h3>
+                            <p class="text-gray-400 text-sm mb-3">March 2024</p>
+                            <p class="text-gray-300">
+                                Won first place in the AIAA Design Competition and received recognition 
+                                from industry professionals for our innovative approach.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item hero-text">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="bg-gray-900 rounded-lg p-6">
+                            <h3 class="text-xl font-bold mb-2">Research Grant</h3>
+                            <p class="text-gray-400 text-sm mb-3">September 2024</p>
+                            <p class="text-gray-300">
+                                Secured significant research funding to scale our operations and 
+                                advance our swarm intelligence algorithms to the next level.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item hero-text">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="bg-gray-900 rounded-lg p-6">
+                            <h3 class="text-xl font-bold mb-2">Industry Recognition</h3>
+                            <p class="text-gray-400 text-sm mb-3">December 2024</p>
+                            <p class="text-gray-300">
+                                Established partnerships with leading aerospace companies and began 
+                                real-world testing of our autonomous swarm solutions.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Skills Overview -->
+    <section class="py-20">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6 hero-text">Team Expertise</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto hero-text">
+                    Our collective knowledge spans across multiple engineering disciplines, 
+                    enabling comprehensive solutions to complex aerospace challenges.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="hero-text">
+                    <h3 class="text-2xl font-bold mb-6">Technical Skills Distribution</h3>
+                    <div id="skillsChart" style="width: 100%; height: 400px;"></div>
+                </div>
+                
+                <div class="hero-text">
+                    <h3 class="text-2xl font-bold mb-6">Core Competencies</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-300">Autonomous Systems</span>
+                                <span class="font-semibold">94%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-fill" style="width: 94%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-300">Software Development</span>
+                                <span class="font-semibold">89%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-fill" style="width: 89%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-300">Aerospace Engineering</span>
+                                <span class="font-semibold">96%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-fill" style="width: 96%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-300">Project Management</span>
+                                <span class="font-semibold">82%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-fill" style="width: 82%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-300">Research & Development</span>
+                                <span class="font-semibold">91%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-fill" style="width: 91%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="py-12 border-t border-white border-opacity-10">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <div class="flex items-center justify-center space-x-3 mb-4">
+                <img src="resources/aerotype-logo.png" alt="Aerotype Logo" class="h-6 w-auto">
+                <span class="text-lg font-bold">Aerotype Developmental Systems</span>
+            </div>
+            <p class="text-gray-400">© 2025 Aerotype Developmental Systems. Student-led aerospace innovation.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Initialize animations
+        document.addEventListener('DOMContentLoaded', () => {
+            // Animate hero elements
+            const heroElements = document.querySelectorAll('.hero-text');
+            anime({
+                targets: heroElements,
+                opacity: [0, 1],
+                translateY: [30, 0],
+                duration: 800,
+                delay: anime.stagger(100),
+                easing: 'easeOutQuart'
+            });
+            
+            // Animate skill bars
+            setTimeout(() => {
+                document.querySelectorAll('.skill-fill').forEach(bar => {
+                    const width = bar.style.width;
+                    bar.style.width = '0%';
+                    setTimeout(() => {
+                        bar.style.width = width;
+                    }, 100);
+                });
+            }, 1500);
+            
+            // Initialize skills chart
+            initializeSkillsChart();
+        });
+        
+        function initializeSkillsChart() {
+            const chartDom = document.getElementById('skillsChart');
+            const myChart = echarts.init(chartDom);
+            
+            const option = {
+                backgroundColor: 'transparent',
+                textStyle: {
+                    color: '#ffffff'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    borderColor: 'rgba(255, 255, 255, 0.2)',
+                    textStyle: {
+                        color: '#ffffff'
+                    }
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                    textStyle: {
+                        color: '#ffffff'
+                    }
+                },
+                series: [
+                    {
+                        name: 'Team Skills',
+                        type: 'pie',
+                        radius: '50%',
+                        data: [
+                            { value: 35, name: 'Autonomous Systems' },
+                            { value: 25, name: 'Software Development' },
+                            { value: 20, name: 'Aerospace Engineering' },
+                            { value: 10, name: 'Project Management' },
+                            { value: 10, name: 'Research & Development' }
+                        ],
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(255, 255, 255, 0.5)'
+                            }
+                        },
+                        itemStyle: {
+                            color: function(params) {
+                                const colors = ['#ffffff', '#cccccc', '#999999', '#666666', '#333333'];
+                                return colors[params.dataIndex];
+                            }
+                        }
+                    }
+                ]
+            };
+            
+            myChart.setOption(option);
+            
+            // Make chart responsive
+            window.addEventListener('resize', () => {
+                myChart.resize();
+            });
+        }
+    </script>
+</body>
+</html>

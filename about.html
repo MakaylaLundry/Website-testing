@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Aerotype Developmental Systems</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000000;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .content-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .content-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #ffffff;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .hero-text {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .value-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin: 0 auto 1rem;
+        }
+        
+        .methodology-step {
+            position: relative;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+        
+        .methodology-step::before {
+            content: attr(data-step);
+            position: absolute;
+            top: -15px;
+            left: 2rem;
+            background: #000000;
+            color: #ffffff;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .contact-form {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+        }
+        
+        .form-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: #ffffff;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #ffffff, #666666);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-text {
+                font-size: 2.5rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="gradient-bg"></div>
+    
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-black bg-opacity-80 backdrop-blur-md border-b border-white border-opacity-10">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <img src="resources/aerotype-logo.png" alt="Aerotype Logo" class="h-8 w-auto">
+                    <span class="text-xl font-bold">Aerotype</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="nav-link text-white hover:text-gray-300">Home</a>
+                    <a href="projects.html" class="nav-link text-white hover:text-gray-300">Projects</a>
+                    <a href="portfolio.html" class="nav-link text-white hover:text-gray-300">Portfolio</a>
+                    <a href="about.html" class="nav-link text-white hover:text-gray-300">About</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobileMenuBtn" class="text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 hero-text">About Aerotype</h1>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto hero-text">
+                    Student-led aerospace innovation at the forefront of autonomous UAV technology. 
+                    We're engineering the future of unmanned aerial systems through collaborative research and cutting-edge development.
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Company Stats -->
+    <section class="py-20">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="stats-grid">
+                <div class="stat-item hero-text">
+                    <div class="stat-number">6</div>
+                    <div class="text-gray-300 text-lg">Core Team Members</div>
+                </div>
+                <div class="stat-item hero-text">
+                    <div class="stat-number">3</div>
+                    <div class="text-gray-300 text-lg">Active Projects</div>
+                </div>
+                <div class="stat-item hero-text">
+                    <div class="stat-number">50+</div>
+                    <div class="text-gray-300 text-lg">UAV Fleet Size</div>
+                </div>
+                <div class="stat-item hero-text">
+                    <div class="stat-number">95%</div>
+                    <div class="text-gray-300 text-lg">Mission Success Rate</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Mission & Vision -->
+    <section class="py-20">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="hero-text">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6">Our Mission</h2>
+                    <p class="text-lg text-gray-300 mb-6">
+                        To advance the field of autonomous aerospace systems through innovative research, 
+                        collaborative engineering, and practical application of cutting-edge technologies. 
+                        We believe that the future of aviation lies in intelligent, coordinated unmanned systems 
+                        that can operate safely and efficiently in any environment.
+                    </p>
+                    <p class="text-lg text-gray-300 mb-8">
+                        As a student-led organization, we're committed to bridging the gap between academic 
+                        research and real-world aerospace challenges, preparing the next generation of engineers 
+                        to lead the industry forward.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <span class="bg-gray-800 px-4 py-2 rounded-full text-sm">Innovation</span>
+                        <span class="bg-gray-800 px-4 py-2 rounded-full text-sm">Collaboration</span>
+                        <span class="bg-gray-800 px-4 py-2 rounded-full text-sm">Excellence</span>
+                        <span class="bg-gray-800 px-4 py-2 rounded-full text-sm">Sustainability</span>
+                    </div>
+                </div>
+                <div class="hero-text">
+                    <img src="resources/team-work.png" alt="Team Collaboration" class="rounded-xl shadow-2xl">
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Core Values -->
+    <section class="py-20">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6 hero-text">Core Values</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto hero-text">
+                    The principles that guide our engineering decisions and collaborative approach to innovation.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="content-card rounded-xl p-8 hero-text">
+                    <div class="value-icon">🚀</div>
+                    <h3 class="text-xl font-bold mb-4 text-center">Innovation First</h3>
+                    <p class="text-gray-300 text-center">
+                        We push the boundaries of what's possible in autonomous systems, 
+                        constantly exploring new technologies and methodologies to solve complex aerospace challenges.
+                    </p>
+                </div>
+                
+                <div class="content-card rounded-xl p-8 hero-text">
+                    <div class="value-icon">🤝</div>
+                    <h3 class="text-xl font-bold mb-4 text-center">Collaborative Excellence</h3>
+                    <p class="text-gray-300 text-center">
+                        Our strength lies in our diverse team and collaborative approach. 
+                        We believe that the best solutions emerge from the intersection of different perspectives and expertise.
+                    </p>
+                </div>
+                
+                <div class="content-card rounded-xl p-8 hero-text">
+                    <div class="value-icon">🎯</div>
+                    <h3 class="text-xl font-bold mb-4 text-center">Practical Impact</h3>
+                    <p class="text-gray-300 text-center">
+                        Every project we undertake is driven by real-world applications and tangible benefits. 
+                        We focus on solutions that make a meaningful difference in aerospace technology and operations.
+                    </p>
+                </div>
+                
+                <div class="content-card rounded-xl p-8 hero-text">
+                    <div class="value-icon">🌱</div>
+                    <h3 class="text-xl font-bold mb-4 text-center">Sustainable Future</h3>
+                    <p class="text-gray-300 text-center">
+                        We're committed to developing environmentally conscious solutions that contribute 
+                        to a sustainable future for aviation and aerospace industries.
+                    </p>
+                </div>
+                
+                <div class="content-card rounded-xl p-8 hero-text">
+                    <div class="value-icon">📚</div>
+                    <h3 class="text-xl font-bold mb-4 text-center">Continuous Learning</h3>
+                    <p class="text-gray-300 text-center">
+                        As students and engineers, we're lifelong learners. Every challenge is an opportunity 
+                        to expand our knowledge and refine our skills in aerospace engineering.
+                    </p>
+                </div>
+                
+                <div class="content-card rounded-xl p-8 hero-text">
+                    <div class="value-icon">🔒</div>
+                    <h3 class="text-xl font-bold mb-4 text-center">Safety & Reliability</h3>
+                    <p class="text-gray-300 text-center">
+                        In aerospace, safety and reliability are paramount. Every system we design 
+                        undergoes rigorous testing and validation to ensure the highest standards of performance.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Innovation Methodology -->
+    <section class="py-20">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6 hero-text">Our Innovation Process</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto hero-text">
+                    A systematic approach to engineering excellence that transforms ideas into reality through rigorous development and testing.
+                </p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="methodology-step hero-text" data-step="01">
+                    <h3 class="text-2xl font-bold mb-4">Research & Conceptualization</h3>
+                    <p class="text-gray-300 mb-4">
+                        We begin with comprehensive research into existing technologies and identification of industry challenges. 
+                        Our team conducts literature reviews, market analysis, and feasibility studies to ensure our solutions address real needs.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-sm">Literature Review</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-sm">Market Analysis</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-sm">Feasibility Studies</span>
+                    </div>
+                </div>
+                
+                <div class="methodology-step hero-text" data-step="02">
+                    <h3 class="text-2xl font-bold mb-4">Design & Simulation</h3>
+                    <p class="text-gray-300 mb-4">
+                        Using advanced CAD software and simulation tools, we create detailed designs and model system behavior. 
+                        This phase includes computational fluid dynamics, structural analysis, and system-level simulations to optimize performance.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-sm">CAD Design</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-sm">CFD Analysis</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-sm">System Simulation</span>
+                    </div>
+                </div>
+                
+                <div class="methodology-step hero-text" data-step="03">
+                    <h3 class="text-2xl font-bold mb-4">Prototype Development</h3>
+                    <p class="text-gray-300 mb-4">
+                        We build and test physical prototypes using our university's advanced manufacturing facilities. 
+                        This hands-on approach allows us to validate our designs and identify areas for improvement through iterative testing.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-sm">Rapid Prototyping</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-sm">Component Testing</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-sm">Iterative Design</span>
+                    </div>
+                </div>
+                
+                <div class="methodology-step hero-text" data-step="04">
+                    <h3 class="text-2xl font-bold mb-4">Field Testing & Validation</h3>
+                    <p class="text-gray-300 mb-4">
+                        Our prototypes undergo extensive field testing in real-world conditions to validate performance, 
+                        reliability, and safety. We collect comprehensive data to refine our systems and ensure operational readiness.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-sm">Field Testing</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-sm">Performance Validation</span>
+                        <span class="bg-gray-800 px-3 py-1 rounded-full text-sm">Safety Assessment</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Future Vision -->
+    <section class="py-20">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="hero-text">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6">Future Vision</h2>
+                    <p class="text-lg text-gray-300 mb-6">
+                        Looking ahead, Aerotype aims to become a leading force in autonomous aerospace systems, 
+                        transitioning from a student-led initiative to a recognized industry innovator. We envision 
+                        our technologies enabling new capabilities in search and rescue, environmental monitoring, 
+                        and infrastructure inspection.
+                    </p>
+                    <p class="text-lg text-gray-300 mb-8">
+                        Our roadmap includes expanding our team, establishing industry partnerships, and 
+                        commercializing our most promising technologies. We're committed to maintaining our 
+                        student-led roots while building a sustainable organization that continues to push 
+                        the boundaries of aerospace innovation.
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <h3 class="text-xl font-bold">2025 Goals</h3>
+                        <ul class="space-y-2 text-gray-300">
+                            <li class="flex items-center space-x-3">
+                                <div class="w-2 h-2 bg-white rounded-full"></div>
+                                <span>Scale UAV fleet to 100+ units</span>
+                            </li>
+                            <li class="flex items-center space-x-3">
+                                <div class="w-2 h-2 bg-white rounded-full"></div>
+                                <span>Establish industry partnerships</span>
+                            </li>
+                            <li class="flex items-center space-x-3">
+                                <div class="w-2 h-2 bg-white rounded-full"></div>
+                                <span>Launch pilot programs with emergency services</span>
+                            </li>
+                            <li class="flex items-center space-x-3">
+                                <div class="w-2 h-2 bg-white rounded-full"></div>
+                                <span>Pursue commercial licensing opportunities</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="hero-text">
+                    <div id="visionChart" style="width: 100%; height: 400px;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section class="py-20">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6 hero-text">Get In Touch</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto hero-text">
+                    Interested in collaboration, partnership opportunities, or learning more about our technologies? 
+                    We'd love to hear from you.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-12">
+                <div class="hero-text">
+                    <h3 class="text-2xl font-bold mb-6">Contact Information</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-1">Email</h4>
+                                <p class="text-gray-300">contact@aerotype.systems</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-1">Location</h4>
+                                <p class="text-gray-300">University Engineering Campus<br>Innovation Lab, Building 42</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-1">Social Media</h4>
+                                <p class="text-gray-300">Follow our journey on academic platforms and research networks</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form p-8 hero-text">
+                    <h3 class="text-2xl font-bold mb-6">Send us a Message</h3>
+                    <form class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Name</label>
+                            <input type="text" class="form-input" placeholder="Your full name">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Email</label>
+                            <input type="email" class="form-input" placeholder="your.email@example.com">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Subject</label>
+                            <select class="form-input">
+                                <option>Collaboration Inquiry</option>
+                                <option>Partnership Opportunity</option>
+                                <option>Technical Question</option>
+                                <option>Media Inquiry</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Message</label>
+                            <textarea class="form-input" rows="4" placeholder="Tell us about your inquiry..."></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-white text-black py-3 px-6 rounded-lg font-semibold hover:bg-gray-200 transition-all duration-300">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="py-12 border-t border-white border-opacity-10">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <div class="flex items-center justify-center space-x-3 mb-4">
+                <img src="resources/aerotype-logo.png" alt="Aerotype Logo" class="h-6 w-auto">
+                <span class="text-lg font-bold">Aerotype Developmental Systems</span>
+            </div>
+            <p class="text-gray-400">© 2025 Aerotype Developmental Systems. Student-led aerospace innovation.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Initialize animations
+        document.addEventListener('DOMContentLoaded', () => {
+            // Animate hero elements
+            const heroElements = document.querySelectorAll('.hero-text');
+            anime({
+                targets: heroElements,
+                opacity: [0, 1],
+                translateY: [30, 0],
+                duration: 800,
+                delay: anime.stagger(100),
+                easing: 'easeOutQuart'
+            });
+            
+            // Initialize vision chart
+            initializeVisionChart();
+            
+            // Form submission handler
+            document.querySelector('form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                alert('Thank you for your message! We will get back to you soon.');
+            });
+        });
+        
+        function initializeVisionChart() {
+            const chartDom = document.getElementById('visionChart');
+            const myChart = echarts.init(chartDom);
+            
+            const option = {
+                backgroundColor: 'transparent',
+                textStyle: {
+                    color: '#ffffff'
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    borderColor: 'rgba(255, 255, 255, 0.2)',
+                    textStyle: {
+                        color: '#ffffff'
+                    }
+                },
+                legend: {
+                    data: ['Technology Development', 'Team Growth', 'Industry Partnerships'],
+                    textStyle: {
+                        color: '#ffffff'
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['2023', '2024', '2025', '2026', '2027', '2028'],
+                    axisLine: {
+                        lineStyle: {
+                            color: 'rgba(255, 255, 255, 0.3)'
+                        }
+                    },
+                    axisLabel: {
+                        color: '#ffffff'
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLine: {
+                        lineStyle: {
+                            color: 'rgba(255, 255, 255, 0.3)'
+                        }
+                    },
+                    axisLabel: {
+                        color: '#ffffff'
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    }
+                },
+                series: [
+                    {
+                        name: 'Technology Development',
+                        type: 'line',
+                        stack: 'Total',
+                        data: [20, 45, 70, 85, 95, 100],
+                        lineStyle: {
+                            color: '#ffffff'
+                        },
+                        itemStyle: {
+                            color: '#ffffff'
+                        },
+                        areaStyle: {
+                            color: {
+                                type: 'linear',
+                                x: 0,
+                                y: 0,
+                                x2: 0,
+                                y2: 1,
+                                colorStops: [{
+                                    offset: 0, color: 'rgba(255, 255, 255, 0.3)'
+                                }, {
+                                    offset: 1, color: 'rgba(255, 255, 255, 0.1)'
+                                }]
+                            }
+                        }
+                    },
+                    {
+                        name: 'Team Growth',
+                        type: 'line',
+                        stack: 'Total',
+                        data: [6, 8, 12, 18, 25, 35],
+                        lineStyle: {
+                            color: '#cccccc'
+                        },
+                        itemStyle: {
+                            color: '#cccccc'
+                        }
+                    },
+                    {
+                        name: 'Industry Partnerships',
+                        type: 'line',
+                        stack: 'Total',
+                        data: [0, 1, 3, 6, 10, 15],
+                        lineStyle: {
+                            color: '#999999'
+                        },
+                        itemStyle: {
+                            color: '#999999'
+                        }
+                    }
+                ]
+            };
+            
+            myChart.setOption(option);
+            
+            // Make chart responsive
+            window.addEventListener('resize', () => {
+                myChart.resize();
+            });
+        }
+    </script>
+</body>
+</html>

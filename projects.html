@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Aerotype Developmental Systems</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000000;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .tech-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .tech-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #ffffff;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .spec-item:last-child {
+            border-bottom: none;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ffffff, #666666);
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+        
+        .hero-text {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            background: #ffffff;
+            border-radius: 50%;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 1.5rem;
+            width: 2px;
+            height: calc(100% - 1rem);
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .timeline-item:last-child::after {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-text {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="gradient-bg"></div>
+    
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-black bg-opacity-80 backdrop-blur-md border-b border-white border-opacity-10">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <img src="resources/aerotype-logo.png" alt="Aerotype Logo" class="h-8 w-auto">
+                    <span class="text-xl font-bold">Aerotype</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="nav-link text-white hover:text-gray-300">Home</a>
+                    <a href="projects.html" class="nav-link text-white hover:text-gray-300">Projects</a>
+                    <a href="portfolio.html" class="nav-link text-white hover:text-gray-300">Portfolio</a>
+                    <a href="about.html" class="nav-link text-white hover:text-gray-300">About</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobileMenuBtn" class="text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 hero-text">Engineering Projects</h1>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto hero-text">
+                    Explore our portfolio of innovative aerospace solutions, from autonomous UAV swarms 
+                    to advanced propulsion systems, all developed through student-led research and collaboration.
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Main Project: UAV Swarm -->
+    <section class="py-20">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-12 items-center mb-20">
+                <div class="hero-text">
+                    <img src="resources/uav-swarm.png" alt="UAV Swarm System" class="rounded-xl shadow-2xl">
+                </div>
+                <div>
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6 hero-text">Off-Grid UAV Swarm Solution</h2>
+                    <p class="text-lg text-gray-300 mb-8 hero-text">
+                        Our flagship project combines autonomous drone coordination with off-grid operational capabilities. 
+                        This system enables persistent surveillance, communication relay, and emergency response in remote 
+                        areas without traditional infrastructure support.
+                    </p>
+                    
+                    <div class="space-y-6 mb-8">
+                        <div class="hero-text">
+                            <h3 class="text-xl font-semibold mb-3">Key Innovations</h3>
+                            <ul class="space-y-2 text-gray-300">
+                                <li class="flex items-center space-x-3">
+                                    <div class="w-2 h-2 bg-white rounded-full"></div>
+                                    <span>AI-driven autonomous coordination algorithms</span>
+                                </li>
+                                <li class="flex items-center space-x-3">
+                                    <div class="w-2 h-2 bg-white rounded-full"></div>
+                                    <span>Mesh communication network with self-healing capabilities</span>
+                                </li>
+                                <li class="flex items-center space-x-3">
+                                    <div class="w-2 h-2 bg-white rounded-full"></div>
+                                    <span>Solar-powered extended operation endurance</span>
+                                </li>
+                                <li class="flex items-center space-x-3">
+                                    <div class="w-2 h-2 bg-white rounded-full"></div>
+                                    <span>Real-time adaptive mission planning</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-text">
+                        <a href="#technical-specs" class="inline-block bg-white text-black px-8 py-3 rounded-lg font-semibold hover:bg-gray-200 transition-all duration-300">
+                            View Technical Specifications
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Technical Specifications -->
+    <section id="technical-specs" class="py-20">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6 hero-text">Technical Specifications</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto hero-text">
+                    Detailed performance metrics and technical capabilities of our UAV swarm system.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8 mb-16">
+                <div class="tech-card rounded-xl p-8 hero-text">
+                    <h3 class="text-2xl font-bold mb-6">System Performance</h3>
+                    <div class="space-y-4">
+                        <div class="spec-item">
+                            <span class="text-gray-300">Maximum Range</span>
+                            <span class="font-semibold">50 km</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="text-gray-300">Flight Endurance</span>
+                            <span class="font-semibold">8 hours</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="text-gray-300">Operational Altitude</span>
+                            <span class="font-semibold">400 ft AGL</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="text-gray-300">Weather Resistance</span>
+                            <span class="font-semibold">IP67 Rated</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="text-gray-300">Communication Range</span>
+                            <span class="font-semibold">10 km LOS</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tech-card rounded-xl p-8 hero-text">
+                    <h3 class="text-2xl font-bold mb-6">AI Capabilities</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-300">Object Recognition</span>
+                                <span class="font-semibold">95%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-300">Collision Avoidance</span>
+                                <span class="font-semibold">99.8%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 98%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-300">Mission Success Rate</span>
+                                <span class="font-semibold">92%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 92%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-300">Response Time</span>
+                                <span class="font-semibold">0.1s</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Performance Chart -->
+            <div class="tech-card rounded-xl p-8 hero-text">
+                <h3 class="text-2xl font-bold mb-6">Performance Analytics</h3>
+                <div id="performanceChart" style="width: 100%; height: 400px;"></div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Development Timeline -->
+    <section class="py-20">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6 hero-text">Development Timeline</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto hero-text">
+                    From initial concept to deployment, follow our journey of innovation and engineering excellence.
+                </p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="space-y-12">
+                    <div class="timeline-item hero-text">
+                        <div class="bg-gray-900 rounded-lg p-6">
+                            <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+                                <h3 class="text-xl font-bold">Phase 1: Research & Conceptualization</h3>
+                                <span class="text-gray-400 text-sm">Q1 2024</span>
+                            </div>
+                            <p class="text-gray-300">
+                                Initial research into swarm intelligence algorithms and off-grid power solutions. 
+                                Feasibility studies and theoretical modeling of autonomous coordination systems.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item hero-text">
+                        <div class="bg-gray-900 rounded-lg p-6">
+                            <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+                                <h3 class="text-xl font-bold">Phase 2: Prototype Development</h3>
+                                <span class="text-gray-400 text-sm">Q2 2024</span>
+                            </div>
+                            <p class="text-gray-300">
+                                Development of initial drone prototypes with basic swarm capabilities. 
+                                Integration of communication systems and preliminary AI algorithms.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item hero-text">
+                        <div class="bg-gray-900 rounded-lg p-6">
+                            <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+                                <h3 class="text-xl font-bold">Phase 3: Testing & Optimization</h3>
+                                <span class="text-gray-400 text-sm">Q3 2024</span>
+                            </div>
+                            <p class="text-gray-300">
+                                Extensive field testing in various environmental conditions. 
+                                Algorithm optimization and performance tuning based on real-world data.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item hero-text">
+                        <div class="bg-gray-900 rounded-lg p-6">
+                            <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+                                <h3 class="text-xl font-bold">Phase 4: Deployment & Scaling</h3>
+                                <span class="text-gray-400 text-sm">Q4 2024</span>
+                            </div>
+                            <p class="text-gray-300">
+                                Successful deployment in controlled environments. 
+                                Scaling up to full swarm capabilities and advanced mission profiles.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Additional Projects -->
+    <section class="py-20">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6 hero-text">Additional Projects</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto hero-text">
+                    Explore our broader portfolio of aerospace engineering innovations and research initiatives.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="tech-card rounded-xl p-6 hero-text">
+                    <img src="https://kimi-web-img.moonshot.cn/img/www.droneuniversities.com/7fc1afc63118094f10d5094870dbdbc8aa9e9130.png" alt="Advanced Propulsion" class="w-full h-48 object-cover rounded-lg mb-4">
+                    <h3 class="text-xl font-bold mb-3">Advanced Propulsion Systems</h3>
+                    <p class="text-gray-300 mb-4">
+                        Next-generation electric and hybrid propulsion systems designed for extended 
+                        flight endurance and improved efficiency in aerospace applications.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-gray-800 px-2 py-1 rounded text-xs">Electric Motors</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded text-xs">Hybrid Power</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded text-xs">Efficiency</span>
+                    </div>
+                </div>
+                
+                <div class="tech-card rounded-xl p-6 hero-text">
+                    <img src="https://kimi-web-img.moonshot.cn/img/static.holystone.com/e1e78aa77ff12706a40baa9e27540ad7ebebfc66.jpg" alt="Communication Systems" class="w-full h-48 object-cover rounded-lg mb-4">
+                    <h3 class="text-xl font-bold mb-3">Mesh Communication Networks</h3>
+                    <p class="text-gray-300 mb-4">
+                        Decentralized communication protocols enabling robust data transmission 
+                        and coordination in challenging RF environments.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-gray-800 px-2 py-1 rounded text-xs">Mesh Networks</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded text-xs">RF Systems</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded text-xs">Protocols</span>
+                    </div>
+                </div>
+                
+                <div class="tech-card rounded-xl p-6 hero-text">
+                    <img src="https://kimi-web-img.moonshot.cn/img/oscarliang.com/7197f1fa448c4236c56b71968f13e00ed4b411cc.jpg" alt="AI Systems" class="w-full h-48 object-cover rounded-lg mb-4">
+                    <h3 class="text-xl font-bold mb-3">AI-Powered Navigation</h3>
+                    <p class="text-gray-300 mb-4">
+                        Machine learning algorithms for autonomous navigation, obstacle avoidance, 
+                        and adaptive mission planning in dynamic environments.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-gray-800 px-2 py-1 rounded text-xs">Machine Learning</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded text-xs">Navigation</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded text-xs">AI Systems</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="py-12 border-t border-white border-opacity-10">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <div class="flex items-center justify-center space-x-3 mb-4">
+                <img src="resources/aerotype-logo.png" alt="Aerotype Logo" class="h-6 w-auto">
+                <span class="text-lg font-bold">Aerotype Developmental Systems</span>
+            </div>
+            <p class="text-gray-400">© 2025 Aerotype Developmental Systems. Student-led aerospace innovation.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Initialize animations
+        document.addEventListener('DOMContentLoaded', () => {
+            // Animate hero elements
+            const heroElements = document.querySelectorAll('.hero-text');
+            anime({
+                targets: heroElements,
+                opacity: [0, 1],
+                translateY: [30, 0],
+                duration: 800,
+                delay: anime.stagger(100),
+                easing: 'easeOutQuart'
+            });
+            
+            // Initialize performance chart
+            initializePerformanceChart();
+            
+            // Animate progress bars
+            setTimeout(() => {
+                document.querySelectorAll('.progress-fill').forEach(bar => {
+                    const width = bar.style.width;
+                    bar.style.width = '0%';
+                    setTimeout(() => {
+                        bar.style.width = width;
+                    }, 100);
+                });
+            }, 1000);
+        });
+        
+        function initializePerformanceChart() {
+            const chartDom = document.getElementById('performanceChart');
+            const myChart = echarts.init(chartDom);
+            
+            const option = {
+                backgroundColor: 'transparent',
+                textStyle: {
+                    color: '#ffffff'
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    borderColor: 'rgba(255, 255, 255, 0.2)',
+                    textStyle: {
+                        color: '#ffffff'
+                    }
+                },
+                legend: {
+                    data: ['Mission Success Rate', 'Response Time', 'Battery Efficiency'],
+                    textStyle: {
+                        color: '#ffffff'
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7', 'Week 8'],
+                    axisLine: {
+                        lineStyle: {
+                            color: 'rgba(255, 255, 255, 0.3)'
+                        }
+                    },
+                    axisLabel: {
+                        color: '#ffffff'
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLine: {
+                        lineStyle: {
+                            color: 'rgba(255, 255, 255, 0.3)'
+                        }
+                    },
+                    axisLabel: {
+                        color: '#ffffff'
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    }
+                },
+                series: [
+                    {
+                        name: 'Mission Success Rate',
+                        type: 'line',
+                        stack: 'Total',
+                        data: [65, 72, 78, 85, 88, 90, 92, 95],
+                        lineStyle: {
+                            color: '#ffffff'
+                        },
+                        itemStyle: {
+                            color: '#ffffff'
+                        },
+                        areaStyle: {
+                            color: {
+                                type: 'linear',
+                                x: 0,
+                                y: 0,
+                                x2: 0,
+                                y2: 1,
+                                colorStops: [{
+                                    offset: 0, color: 'rgba(255, 255, 255, 0.3)'
+                                }, {
+                                    offset: 1, color: 'rgba(255, 255, 255, 0.1)'
+                                }]
+                            }
+                        }
+                    },
+                    {
+                        name: 'Response Time',
+                        type: 'line',
+                        stack: 'Total',
+                        data: [0.5, 0.4, 0.35, 0.3, 0.25, 0.2, 0.15, 0.1],
+                        lineStyle: {
+                            color: '#cccccc'
+                        },
+                        itemStyle: {
+                            color: '#cccccc'
+                        }
+                    },
+                    {
+                        name: 'Battery Efficiency',
+                        type: 'line',
+                        stack: 'Total',
+                        data: [70, 75, 80, 82, 85, 87, 89, 92],
+                        lineStyle: {
+                            color: '#999999'
+                        },
+                        itemStyle: {
+                            color: '#999999'
+                        }
+                    }
+                ]
+            };
+            
+            myChart.setOption(option);
+            
+            // Make chart responsive
+            window.addEventListener('resize', () => {
+                myChart.resize();
+            });
+        }
+    </script>
+</body>
+</html>
